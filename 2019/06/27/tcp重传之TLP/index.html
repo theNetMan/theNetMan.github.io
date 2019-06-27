@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>github+hexo搭建个人博客 | theNetMan</title>
+  <title>tcp重传之TLP | theNetMan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一直想有个自己的博客，记录个人技术和生活相关的点滴，终于在今天花了几个小时简单弄了一个，基本满足自己的需求了，后续如果能坚持写，再把她弄漂亮点。">
+  <meta name="description" content="tcp作为一个可靠的传输层协议，会想方设法保证发送的包能完好无损地到达接收端，保底的方法就是超时重传，但是RTO的代价太大了，因此就有FR(Fast Retransmit),ER(Early Retransmit),TLP(Tail Loss Probe)等优化手段出现，这些优化目的就是更快地发现可能出现的丢包并进行重传，从而提升TCP性能，今天就聊聊TLP。。。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="github+hexo搭建个人博客">
-<meta property="og:url" content="http://yoursite.com/2019/06/26/github+hexo个人博客搭建/index.html">
+<meta property="og:title" content="tcp重传之TLP">
+<meta property="og:url" content="http://yoursite.com/2019/06/27/tcp重传之TLP/index.html">
 <meta property="og:site_name" content="theNetMan">
-<meta property="og:description" content="一直想有个自己的博客，记录个人技术和生活相关的点滴，终于在今天花了几个小时简单弄了一个，基本满足自己的需求了，后续如果能坚持写，再把她弄漂亮点。">
+<meta property="og:description" content="tcp作为一个可靠的传输层协议，会想方设法保证发送的包能完好无损地到达接收端，保底的方法就是超时重传，但是RTO的代价太大了，因此就有FR(Fast Retransmit),ER(Early Retransmit),TLP(Tail Loss Probe)等优化手段出现，这些优化目的就是更快地发现可能出现的丢包并进行重传，从而提升TCP性能，今天就聊聊TLP。。。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-26T08:56:02.774Z">
+<meta property="og:updated_time" content="2019-06-27T09:56:07.804Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="github+hexo搭建个人博客">
-<meta name="twitter:description" content="一直想有个自己的博客，记录个人技术和生活相关的点滴，终于在今天花了几个小时简单弄了一个，基本满足自己的需求了，后续如果能坚持写，再把她弄漂亮点。">
+<meta name="twitter:title" content="tcp重传之TLP">
+<meta name="twitter:description" content="tcp作为一个可靠的传输层协议，会想方设法保证发送的包能完好无损地到达接收端，保底的方法就是超时重传，但是RTO的代价太大了，因此就有FR(Fast Retransmit),ER(Early Retransmit),TLP(Tail Loss Probe)等优化手段出现，这些优化目的就是更快地发现可能出现的丢包并进行重传，从而提升TCP性能，今天就聊聊TLP。。。">
   
     <link rel="alternative" href="/atom.xml" title="theNetMan" type="application/atom+xml">
   
@@ -124,38 +124,28 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-github+hexo个人博客搭建" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-tcp重传之TLP" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      github+hexo搭建个人博客
+      tcp重传之TLP
     </h1>
   
 
         
-        <a href="/2019/06/26/github+hexo个人博客搭建/" class="archive-article-date">
-  	<time datetime="2019-06-26T07:21:18.670Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-26</time>
+        <a href="/2019/06/27/tcp重传之TLP/" class="archive-article-date">
+  	<time datetime="2019-06-27T09:44:35.877Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-27</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>一直想有个自己的博客，记录个人技术和生活相关的点滴，终于在今天花了几个小时简单弄了一个，基本满足自己的需求了，后续如果能坚持写，再把她弄漂亮点。</p>
+        <p>tcp作为一个可靠的传输层协议，会想方设法保证发送的包能完好无损地到达接收端，保底的方法就是超时重传，但是RTO的代价太大了，因此就有FR(Fast Retransmit),ER(Early Retransmit),TLP(Tail Loss Probe)等优化手段出现，这些优化目的就是更快地发现可能出现的丢包并进行重传，从而提升TCP性能，今天就聊聊TLP。。。</p>
 <a id="more"></a>
-<h2 id="搭建方法"><a href="#搭建方法" class="headerlink" title="搭建方法"></a>搭建方法</h2><p>比较简单，网上随便巴拉巴拉就能成，感慨一下：网络真方便。</p>
-<ol>
-<li>创建github库</li>
-<li>安装node.js,因为hexo是基于node.js</li>
-<li>安装hexo</li>
-<li>选选主题，做一些配置就行了</li>
-</ol>
-<p>参考：<a href="https://www.cnblogs.com/liuxianan/p/build-blog-website-by-hexo-github.html" target="_blank" rel="noopener">https://www.cnblogs.com/liuxianan/p/build-blog-website-by-hexo-github.html</a></p>
-<p>以上算是本博客的个人生平简介，出身不好，但愿通过后天努力能弥补一些。</p>
-
       
 
       
@@ -234,7 +224,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/06/26/github+hexo个人博客搭建/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/06/27/tcp重传之TLP/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -248,15 +238,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/06/27/tcp重传之TLP/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          tcp重传之TLP
-        
-      </div>
-    </a>
   
+    <a href="/2019/06/26/github+hexo个人博客搭建/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">github+hexo搭建个人博客</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 
